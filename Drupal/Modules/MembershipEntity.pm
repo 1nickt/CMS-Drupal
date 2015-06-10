@@ -2,62 +2,83 @@ package CMS::Drupal::Modules::MembershipEntity;
 
 use Moo;
 use Types::Standard qw/ :all /;
+use CMS::Drupal::Modules::MembershipEntity::Membership;
+use CMS::Drupal::Modules::MembershipEntity::Term;
+use Data::Dumper;
+use Carp;
+use feature qw/ say /;
 
-has database_handle => ( is => 'ro', isa => InstanceOf['DBI::db'], required => 1 );
+has dbh    => ( is => 'ro', isa => InstanceOf['DBI::db'], required => 1 );
+has prefix => ( is => 'ro', isa => Maybe[Str], required => 1 );
 
-sub fetch_all_memberships {
+sub fetch_memberships {
   my $self = shift;
-  $self->{ _all_memberships } =
-    $self->{ database_handle }->selectall_hashref( "select * from membership_entity", 'mid' );
-  return $self->{ _all_memberships };
-}
+ 
+  my $temp;
+  my $memberships;
 
-sub count_all_memberships {
-  my $self = shift;
-  $self->{ _count_all_memberships } =
-    $self->{ database_handle }->selectrow_array( "select count(mid) from membership_entity" );
-  return $self->{ _count_all_memberships };
-}
+  ## Get the Membership info
+  my $sql = qq|
+    SELECT mid, created, changed, uid, status, member_id, type
+    FROM $self->{'prefix'}membership_entity
+  |;
+  my $sth = $self->{'dbh'}->prepare( $sql );
+  $sth->execute;
+  my $results = $sth->fetchall_hashref('mid');
+  foreach my $mid (keys( %$results )) {
+    $temp->{ $mid } = $results->{ $mid };
+  }
 
-sub count_expired_memberships {
-  my $self = shift;
-  $self->{ _count_expired_memberships } =
-    $self->{ database_handle }->selectrow_array( "select count(mid) from membership_entity where status = 0" );
-  return $self->{ _count_expired_memberships };
-}
+  ## Get the Membership Term info
+  $sql = qq|
+    SELECT t.id AS tid, t.mid AS mid, t.status AS status, t.term AS term,
+           t.modifiers AS modifiers, UNIX_TIMESTAMP(t.start) as start,
+           UNIX_TIMESTAMP(t.end) as end
+    FROM $self->{'prefix'}membership_entity_term t
+    LEFT JOIN $self->{'prefix'}membership_entity m ON t.mid = m.mid
+    ORDER BY start
+  |;
+  $sth = $self->{'dbh'}->prepare( $sql );
+  $sth->execute;
 
-sub count_active_memberships {
-  my $self = shift;
-  $self->{ _count_active_memberships } =
-    $self->{ database_handle }->selectrow_array( "select count(mid) from membership_entity where status = 1" );
-  return $self->{ _count_active_memberships };
-}
+  my %term_count; # used to track array position of Terms
 
-sub count_cancelled_memberships {
-  my $self = shift;
-  $self->{ _count_cancelled_memberships } =
-    $self->{ database_handle }->selectrow_array( "select count(mid) from membership_entity where status = 2" );
-  return $self->{ _count_cancelled_memberships };
-}
+  while( my $row = $sth->fetchrow_hashref ) {
 
-sub count_pending_memberships {
-  my $self = shift;
-  $self->{ _count_pending_memberships } =
-    $self->{ database_handle }->selectrow_array( "select count(mid) from membership_entity where status = 3" );
-  return $self->{ _count_pending_memberships };
-}
+    ## Shouldn't be but is possible to have a Term with no start or end
+    if ( not defined $row->{'start'} or not defined $row->{'end'} ) {
+      carp "MISSING DATE: tid< $row->{'tid'} > " .
+           "(uid< $temp->{ $row->{'mid'} }->{'uid'} >) has no start " .
+           "or end date defined. Skipping ...";
+      next;
+    }
 
-sub percentage_active_memberships {
-  my $self = shift;
-  $self->{ _percentage_active_memberships } = sprintf("%.2f%%", (($self->count_active_memberships / $self->count_all_memberships) * 100));
-  return $self->{ _percentage_active_memberships };
-}
+    ## Track which of the Membership's Terms this is
+    $term_count{ $row->{'mid'} }++;
+    $row->{'array_position'} = $term_count{ $row->{'mid'} };
 
-sub percentage_expired_memberships {
-  my $self = shift;
-  $self->{ _percentage_expired_memberships } = sprintf("%.2f%%", (($self->count_expired_memberships / $self->count_all_memberships) * 100));
-  return $self->{ _percentage_expired_memberships };
-}
+    ## Instantiate a MembershipEntity::Term object for each
+    ## Term now that we have the data
+    my $term = CMS::Drupal::Modules::MembershipEntity::Term->new( $row );
+    $temp->{ $row->{'mid'} }->{ 'terms' }->{ $row->{'tid'} } = $term;
+  }
 
+  ## Instantiate a MembershipEntity::Membership object for each
+  ## Membership now that we have the data
+  foreach my $mid( keys( %$temp )) {
+    
+    ## Shouldn't be but is possible to have a Membership with no Term
+    if (not defined $temp->{ $mid }->{'terms'}) {
+      carp "MISSING TERM: mid< $mid > (uid< $temp->{ $mid }->{'uid'} >) " .
+           "has no Membership Terms. Skipping ...";
+      next;
+    }
+    
+    $memberships->{ $mid } =
+    CMS::Drupal::Modules::MembershipEntity::Membership->new( $temp->{ $mid } );
+  }
+  
+  return $memberships;
+}
 
 1; ## return true to end package CMS::Drupal::Modules::MembershipEntity
