@@ -79,19 +79,19 @@ Use the module as shown in the Synopsis above.
 =head2 PARAMETERS
 
 
-B<database>: The name of your Drupal database. Required.
+B<database> The name of your Drupal database. Required.
 
-B<username>: The database username. Required, even if you let MySQL use the default of your system user name.
+B<username> The database username. Required, even if you let MySQL use the default of your system user name.
 
-B<password>: The database password. Required, even if MySQL doesn't require one (use "''" [i.e., two single quotes]).
+B<password> The database password. Required, even if MySQL doesn't require one (use "''" [i.e., two single quotes]).
 
-B<host>: The name or IP address of the server where your Drupal database lives. Required, even if you let MySQL use the default of your local machine (use "localhost").
+B<host> The name or IP address of the server where your Drupal database lives. Required, even if you let MySQL use the default of your local machine (use "localhost").
 
-B<port>: The port on which to connect to the MySQL server. Not required; defaults to MySQL's default of 3306.
+B<port> The port on which to connect to the MySQL server. Not required; defaults to MySQL's default of 3306.
 
-B<driver>: The name of the Perl DBD database driver to use to connect to the database through the DBI. Not required (and should not be set); defaults to "mysql".
+B<driver> The name of the Perl DBD database driver to use to connect to the database through the DBI. Not required (and should not be set); defaults to "mysql".
 
-B<prefix>: The prefix that you set in Drupal for your database table names (if any). Not required, but if supplied, must end with an underscore (e.g. "foo_").
+B<prefix> The prefix that you set in Drupal for your database table names (if any). Not required, but if supplied, must end with an underscore (e.g. "foo_").
 
 =head1 AUTHOR
  
