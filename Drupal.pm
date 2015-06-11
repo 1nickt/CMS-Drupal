@@ -1,5 +1,8 @@
 package CMS::Drupal;
 
+use strict;
+use warnings;
+
 use vars qw($VERSION $VERSION_DATE);
  
 $VERSION = "0.99";

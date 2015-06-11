@@ -1,5 +1,8 @@
 package CMS::Drupal::Modules::MembershipEntity::Membership;
 
+use strict;
+use warnings;
+
 use vars qw($VERSION $VERSION_DATE);
 $VERSION = "0.99";
 $VERSION_DATE = "June, 2015";
