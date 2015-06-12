@@ -169,7 +169,9 @@ This program should have been distributed with the following files:
 =head1 INSTALLATION
 
 Copy the files in this distribution to a directory where you have permission to
-execute files.
+execute files. If you download and unpack the .tar.gz archive, it will create
+create a directory called notify_expiring_members in which all the files will be
+placed.
 
 Copy the file notify_expiring_members.config.sample to
 notify_expiring_members.config and then configure for your system.
@@ -178,7 +180,7 @@ Set a daily cron job to run the script.
 
 =head2 Dependencies
 
-This program dependes on the following Perl modules:
+This program depends on the following Perl modules:
  
 L<DBI>
 
@@ -307,6 +309,45 @@ tokens are available for use in the templates:
 
 [% signature %]    The signature of the sender of the notification
                    (from the config file)
+
+=head2 Logging/Error checking
+
+The program prints a report as it goes, so if you direct the output of
+the program to a file, it will effectively serve as a log. If you are 
+running it from cron, do something like this:
+
+32 3 * * * /path/to/notify_expiring_members.pl >> /path/to/your.log
+
+The output of the program that will be logged looks like this: 
+
+################################################################
+
+Initializing at 2015-06-07 03:32:01
+  --------------------------------------------------------------
+  Processing for 1 ...
+    12855 rastus Monday, June 8th, 2015
+      Sending email ... email sent.
+    11678 user007 Monday, June 8th, 2015
+      Sending email ... email sent.
+  Finished.
+  --------------------------------------------------------------
+  Processing for 7 ...
+  Finished.
+  --------------------------------------------------------------
+  Processing for 14 ...
+    13067 smcleod Sunday, June 21st, 2015
+      Sending email ... email sent.
+  Finished.
+  --------------------------------------------------------------
+  Processing for 31 ...
+  Finished.
+  --------------------------------------------------------------
+Finished at 2015-06-07 03:32:01.
+################################################################
+
+Of course you can always include yourself on the list of copy_to email 
+addresses in the configuration file, so that you see all the emails
+that the program sends.
 
 =head1 SUPPORT
 
