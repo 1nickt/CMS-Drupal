@@ -1,45 +1,50 @@
 package CMS::Drupal;
 
+use v5.10;
+
 use strict;
 use warnings;
 
-use vars qw($VERSION $VERSION_DATE);
- 
-$VERSION = "0.99";
-$VERSION_DATE = "June, 2015";
+our $VERSION = "0.99";
+our $VERSION_DATE = "June, 2015";
 
 use Moo;
-use Types::Standard qw/ :all /;
-use DBI;
-use Carp qw/ confess /;
+use Types::Standard    qw/ Optional Maybe Str Int slurpy Dict /;
+use CMS::Drupal::Types qw/ Database Username Password Host Port Prefix /;
+use Type::Params       qw/ compile /;
 
-has database => ( is => 'ro', isa => Str, required => 1 );
-has username => ( is => 'ro', isa => Str, required => 1 );
-has password => ( is => 'ro', isa => Str, required => 1 );
-has host     => ( is => 'ro', isa => Str, required => 1 );
-has port     => ( is => 'ro', isa => Int, default => 3306 );
-has driver   => ( is => 'ro', isa => Str, default => 'mysql' );
-has prefix   => ( is => 'ro', isa => sub {
-      if ($_[0] and $_[0] !~ /\w+_/) {
-        confess("'$_[0]' is not a valid prefix. Database table prefix must end in an underscore.");
-      }
-    }, default => '' ); # end 'prefix' type check
+use DBI;
+use Carp qw/ confess croak /;
+use Data::Dumper;
 
 sub dbh {
   my $self = shift;
+  return $self->{'_dbh'} if defined( $self->{'_dbh'} );
 
-  return $self->{'_dbh'} if defined($self->{'_dbh'});
+  my $args = { @_ };
+  my %types = (
+    database => Database,
+    username => Username,
+    password => Password,
+    host     => Host,
+    port     => Port,
+    prefix   => Prefix,
+  );
 
-  my $dsn = "dbi:"       . $self->driver .
-            ":database=" . $self->database .
-            ";host="     . $self->host .
-            ";port="     . $self->port;
+  for( keys %$args ) {
+    my $validate = compile( slurpy Dict [ $_ => $types{$_} ]);
+    my ($param) = $validate->( $_ => $args->{$_} );
+    say "$_: '$args->{$_}' passed";
+  }
 
-  $self->{'_dbh'} = DBI->connect($dsn, $self->username, $self->password, {RaiseError => 1});
+  my $dsn = 'dbi:mysql:' . $args->{'database'} . ';host=' . $args->{'host'} .
+                           ($args->{'port'} ? ';port=' . $args->{'port'} : '');
+
+  $self->{'_dbh'} = DBI->connect($dsn, $args->{'username'}, $args->{'password'},
+                                 { 'RaiseError' => 1} );
   
   return $self->{'_dbh'};
 }
-
 
 1; ## return true to end package CMS::Drupal
 
