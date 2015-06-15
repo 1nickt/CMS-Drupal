@@ -1,6 +1,6 @@
 package CMS::Drupal::Types;
  
-use 5.10;
+use v5.10;
  
 use strict;
 use warnings;
@@ -15,7 +15,7 @@ use Type::Library -base, -declare => qw/ Database
                                          DBPort
                                          DBPrefix /;
 use Type::Utils qw/ :all /;
-use Types::Standard qw/ Optional Maybe Str Int slurpy Dict /;
+use Types::Standard qw/ Optional Maybe Str StrMatch Int slurpy Dict /;
 
 declare Database, as Str, where { length($_) > 0 },
   message { "You must supply the database name. " };
@@ -32,7 +32,7 @@ declare DBHost, as Optional[Str],
 declare DBPort, as Optional[Int],
   message { "The port number must be an integer." };
 
-declare DBPrefix, as Optional[Str], where { $_ =~ m/\w+_/x },
+declare DBPrefix, as Optional[StrMatch[ qr/\w+_/x ]],
   message { DPPrefix->validate($_) or "The table prefix must end in an underscore." };
 
 1; ## return true to end package CMS::Drupal::Types
