@@ -1,6 +1,6 @@
 package CMS::Drupal;
 
-use v5.10;
+use 5.10;
 
 use strict;
 use warnings;
@@ -10,7 +10,7 @@ our $VERSION_DATE = "June, 2015";
 
 use Moo;
 use Types::Standard    qw/ Optional Maybe Str Int slurpy Dict /;
-use CMS::Drupal::Types qw/ Database Username Password Host Port Prefix /;
+use CMS::Drupal::Types qw/ Database DBUsername DBPassword DBHost DBPort DBPrefix /;
 use Type::Params       qw/ compile /;
 
 use DBI;
@@ -19,16 +19,17 @@ use Data::Dumper;
 
 sub dbh {
   my $self = shift;
+  my $args = { @_ };
+
   return $self->{'_dbh'} if defined( $self->{'_dbh'} );
 
-  my $args = { @_ };
   my %types = (
     database => Database,
-    username => Username,
-    password => Password,
-    host     => Host,
-    port     => Port,
-    prefix   => Prefix,
+    username => DBUsername,
+    password => DBPassword,
+    host     => DBHost,
+    port     => DBPort,
+    prefix   => DBPrefix,
   );
 
   for( keys %$args ) {
@@ -114,8 +115,10 @@ Copyright (c) 2015 Nick Tonkin. All rights reserved.
 You may distribute this module under the same license as Perl itself.
  
 =head1 SEE ALSO
- 
-L<CMS::Drupal::Modules::MembershipEntity>.
+
+L<CMS::Drupal::Types>
+
+CMS::Drupal::Modules::*
  
 =cut
 
