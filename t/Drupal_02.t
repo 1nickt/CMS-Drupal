@@ -13,6 +13,10 @@ use Carp;
 
 my @handles = Test::Database->handles( { 'dbd' => 'mysql' });
 
+say '+' x 70;
+say "CMS::Drupal test 02 - Database tests.";
+say '';
+
 my $drupal = CMS::Drupal->new;
 my %params;
 
@@ -49,4 +53,6 @@ if ( prompt( "\nWould you like to test the module on your Drupal database?", 'Ye
 ok( my $dbh = $drupal->dbh( %params ), 'got a dbh with the credentials' );
 
 done_testing();
+
+say '';
 
