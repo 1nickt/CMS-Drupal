@@ -1,12 +1,8 @@
 package CMS::Drupal;
 
-use v5.10;
-
 use strict;
 use warnings;
-
-our $VERSION = "0.99";
-our $VERSION_DATE = "June, 2015";
+use v5.10;
 
 use Moo;
 use Types::Standard    qw/ Optional Maybe Str Int slurpy Dict /;

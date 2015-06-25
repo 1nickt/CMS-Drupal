@@ -1,12 +1,8 @@
 package CMS::Drupal::Types;
  
-use v5.10;
- 
 use strict;
 use warnings;
- 
-our $VERSION = "0.99";
-our $VERSION_DATE = "June, 2015";
+use v5.10;
 
 use Type::Library -base, -declare => qw/ Database
                                          DBUsername
