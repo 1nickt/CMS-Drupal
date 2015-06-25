@@ -1,8 +1,10 @@
 package CMS::Drupal;
 
+# ABSTRACT: Perl interface to the Drupal CMS
+
 use strict;
 use warnings;
-use v5.10;
+use 5.010;
 
 use Moo;
 use Types::Standard    qw/ Optional Maybe Str Int slurpy Dict /;
@@ -30,7 +32,9 @@ sub dbh {
     prefix   => DBPrefix,
   );
 
-  for( keys %$args ) {
+  for( keys %{$args} ) {
+    next unless exists $types{ $_ }; # we have all params in %types so we might as well
+                                     # throw away any unrequested params.
     my $validate = compile( slurpy Dict [ $_ => $types{$_} ]);
     my ($param) = $validate->( $_ => $args->{$_} );
   }
@@ -41,11 +45,12 @@ sub dbh {
   my $username = (exists $args->{'username'} ? $args->{'username'} : '');
   my $password = (exists $args->{'password'} ? $args->{'password'} : '');
   $self->{'_dbh'} = DBI->connect( $dsn, $username, $password, { 'RaiseError' => 1} );
-  
+
   return $self->{'_dbh'};
 }
 
 1; ## return true to end package CMS::Drupal
+__END__
 
 =pod
  
@@ -99,7 +104,7 @@ B<prefix> The prefix that you set in Drupal for your database table names (if an
 
 =head1 AUTHOR
  
-Author: Nick Tonkin (nick@websitebackendsolutions.com)
+Author: Nick Tonkin (tonkin@cpan.org)
  
 =head1 COPYRIGHT
  
@@ -111,10 +116,8 @@ You may distribute this module under the same license as Perl itself.
  
 =head1 SEE ALSO
 
-L<CMS::Drupal::Types>
+L<CMS::Drupal::Types|CMS::Drupal::Types>
 
-CMS::Drupal::Modules::*
- 
 =cut
 
 

@@ -1,8 +1,10 @@
 package CMS::Drupal::Types;
- 
+
+# ABSTRACT: A Perl type library for working with Drupal
+
 use strict;
 use warnings;
-use v5.10;
+use 5.010;
 
 use Type::Library -base, -declare => qw/ Database
                                          DBUsername
@@ -13,25 +15,26 @@ use Type::Library -base, -declare => qw/ Database
 use Type::Utils qw/ :all /;
 use Types::Standard qw/ Optional Maybe Str StrMatch Int slurpy Dict /;
 
-declare Database, as Str, where { length($_) > 0 },
-  message { "You must supply the database name. " };
+declare Database, as Str, where { length > 0 },
+  message { 'You must supply the database name. ' };
 
 declare DBUsername, as Optional[Str],
-  message { "The username must be a string. " };
+  message { 'The username must be a string. ' };
 
 declare DBPassword, as Optional[Str],
-  message { "The password must be a string. " };
+  message { 'The password must be a string. ' };
 
 declare DBHost, as Optional[Str],
-  message { "The hostname must be a string. " };
+  message { 'The hostname must be a string. ' };
 
 declare DBPort, as Optional[Int],
-  message { "The port number must be an integer." };
+  message { 'The port number must be an integer. ' };
 
-declare DBPrefix, as Optional[StrMatch[ qr/\w+_/x ]],
-  message { DPPrefix->validate($_) or "The table prefix must end in an underscore." };
+declare DBPrefix, as Optional[StrMatch[ qr/ \w+_ /x ]],
+  message { DPPrefix->validate($_) or 'The table prefix must end in an underscore. ' };
 
 1; ## return true to end package CMS::Drupal::Types
+__END__
 
 =pod
 
