@@ -6,7 +6,7 @@ use strict;
 use warnings;
 use 5.010;
 
-use Type::Library -base, -declare => qw/ Database
+use Type::Library -base, -declare => qw/ DBName
                                          DBDriver
                                          DBUsername
                                          DBPassword
@@ -16,11 +16,11 @@ use Type::Library -base, -declare => qw/ Database
 use Type::Utils qw/ :all /;
 use Types::Standard qw/ Optional Maybe Str StrMatch Int slurpy Dict /;
 
-declare Database, as Str, where { length > 0 },
+declare DBName, as Str, where { length > 0 },
   message { 'You must supply the database name. ' };
 
 declare DBDriver, as StrMatch[ qr{ ^(mysql|Pg|SQLite)$ }x ],
-  message { 'You must supply the name of a valid installed DBI DBD driver (mysql, Pg, or SQLite). ' };
+  message { 'You must supply the name of a valid installed dbi:dbd driver (mysql, Pg, or SQLite). ' };
 
 declare DBUsername, as Optional[Str],
   message { 'The username must be a string. ' };
@@ -35,7 +35,7 @@ declare DBPort, as Optional[Int],
   message { 'The port number must be an integer. ' };
 
 declare DBPrefix, as Optional[StrMatch[ qr/ \w+_ /x ]],
-  message { DPPrefix->validate($_) or 'The table prefix must end in an underscore. ' };
+  message { 'The table prefix must end in an underscore. ' };
 
 1; ## return true to end package CMS::Drupal::Types
 __END__
@@ -58,14 +58,14 @@ You can use this module to import Type::Tiny-style types relevant to Drupal into
 If you want to use the types to validate parameters passed to a method or a sub, use the following syntax as an example:
 
 
-  use CMS::Drupal::Types qw/ Database DBDriver DBUsername DBPassword DBHost DBPort DBPrefix /;
+  use CMS::Drupal::Types qw/ DBName DBDriver DBUsername DBPassword DBHost DBPort DBPrefix /;
   use Types::Standard    qw/ Optional Maybe Str StrMatch Int slurpy Dict /;
   use Type::Params       qw/ compile /;
 
   sub my_sub {
     my $args = { @_ };
     my %types = (
-      database => Database,
+      database => DBName,
       driver   => DBDriver,
       username => DBUsername,
       password => DBPassword,
@@ -83,7 +83,7 @@ If you want to use the types to validate parameters passed to a method or a sub,
 
 =head2 TYPES
 
-B<Database>
+B<DBName>
  Must be a non-empty string.
 
 B<DBDriver>

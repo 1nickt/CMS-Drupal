@@ -8,7 +8,7 @@ use 5.010;
 
 use Moo;
 use Types::Standard    qw/ Optional Maybe Str Int slurpy Dict /;
-use CMS::Drupal::Types qw/ Database DBDriver DBUsername DBPassword DBHost DBPort DBPrefix /;
+use CMS::Drupal::Types qw/ DBName DBDriver DBUsername DBPassword DBHost DBPort DBPrefix /;
 use Type::Params       qw/ compile /;
 
 use DBI;
@@ -21,11 +21,11 @@ sub dbh {
 
   my $args = { @_ };
 
-  return 0 unless exists $args->{'database'};
-  return 0 unless exists $args->{'driver'};
+  confess "Fatal error! No database name provided! " unless exists $args->{'database'};
+  confess "Fatal error! No dbi:driver provided! " unless exists $args->{'driver'};
 
   my %types = (
-    database => Database,
+    database => DBName,
     driver   => DBDriver,
     username => DBUsername,
     password => DBPassword,
