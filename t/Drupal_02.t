@@ -15,7 +15,6 @@ my @handles = Test::Database->handles( { 'dbd' => 'mysql' } );
 
 say '+' x 70;
 say "CMS::Drupal test 02 - Database tests.";
-say '';
 
 my $drupal = CMS::Drupal->new;
 my %params;
@@ -90,5 +89,5 @@ ok( $sth->execute(), 'Retrieve a record from the users table.' );
 
 done_testing();
 
-say '';
+say "+" x 70;
 

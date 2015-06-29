@@ -7,6 +7,7 @@ use warnings;
 use 5.010;
 
 use Type::Library -base, -declare => qw/ Database
+                                         DBDriver
                                          DBUsername
                                          DBPassword
                                          DBHost
@@ -17,6 +18,9 @@ use Types::Standard qw/ Optional Maybe Str StrMatch Int slurpy Dict /;
 
 declare Database, as Str, where { length > 0 },
   message { 'You must supply the database name. ' };
+
+declare DBDriver, as StrMatch[ qr{ ^(mysql|Pg|SQLite)$ }x ],
+  message { 'You must supply the name of a valid installed DBI DBD driver (mysql, Pg, or SQLite). ' };
 
 declare DBUsername, as Optional[Str],
   message { 'The username must be a string. ' };
@@ -54,14 +58,15 @@ You can use this module to import Type::Tiny-style types relevant to Drupal into
 If you want to use the types to validate parameters passed to a method or a sub, use the following syntax as an example:
 
 
-  use CMS::Drupal::Types qw/ Database DBUsername DBPassword DBHost DBPort DBPrefix /;
-  use Types::Standard    qw/ Optional Maybe Str Int slurpy Dict /;
+  use CMS::Drupal::Types qw/ Database DBDriver DBUsername DBPassword DBHost DBPort DBPrefix /;
+  use Types::Standard    qw/ Optional Maybe Str StrMatch Int slurpy Dict /;
   use Type::Params       qw/ compile /;
 
   sub my_sub {
     my $args = { @_ };
     my %types = (
       database => Database,
+      driver   => DBDriver,
       username => DBUsername,
       password => DBPassword,
       host     => DBHost,
@@ -81,6 +86,9 @@ If you want to use the types to validate parameters passed to a method or a sub,
 B<Database>
  Must be a non-empty string.
 
+B<DBDriver>
+ Must be one of 'mysql', 'Pg', or 'SQLite'.
+
 B<DBUsername>
  Must be a string if present. May be empty. May be omitted.
 
@@ -99,7 +107,7 @@ B<DBPrefix>
 
 =head1 AUTHOR
  
-Author: Nick Tonkin (nick@websitebackendsolutions.com)
+Author: Nick Tonkin (tonkin@cpan.org)
  
 =head1 COPYRIGHT
  
@@ -111,15 +119,15 @@ You may distribute this module under the same license as Perl itself.
  
 =head1 SEE ALSO
 
-L<CMS::Drupal>.
+L<CMS::Drupal|CMS::Drupal>.
 
-L<Type::Tiny>
+L<Type::Tiny|Type::Tiny>
 
-L<Type::Library>
+L<Type::Library|Type::Library>
 
-L<Types::Standard>
+L<Types::Standard|Types::Standard>
 
-L<Type::Params>
+L<Type::Params|Type::Params>
 
 =cut
 
