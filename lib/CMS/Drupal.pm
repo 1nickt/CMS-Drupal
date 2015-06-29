@@ -34,7 +34,7 @@ sub dbh {
     prefix   => DBPrefix,
   );
 
-  for( keys %{$args} ) {
+  for ( keys %{$args} ) {
     next unless exists $types{ $_ }; # throw away unknown params
     my $validate = compile( slurpy Dict [ $_ => $types{$_} ]);
     my ($param) = $validate->( $_ => $args->{$_} );
