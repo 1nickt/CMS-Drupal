@@ -22,7 +22,7 @@ sub dbh {
   my $args = { @_ };
 
   confess "Fatal error! No database name provided! " unless exists $args->{'database'};
-  confess "Fatal error! No dbi:driver provided! " unless exists $args->{'driver'};
+  confess "Fatal error! No dbi:driver provided! "    unless exists $args->{'driver'};
 
   my %types = (
     database => DBName,
