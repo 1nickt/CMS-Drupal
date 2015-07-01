@@ -5,11 +5,12 @@ use warnings;
 use feature qw/ say /;
 
 use ExtUtils::MakeMaker;
-use Test::More;
 use Test::Database;
 use CMS::Drupal;
 use Data::Dumper;
 use Carp;
+
+use Test::More tests => 4;
 
 my @handles = Test::Database->handles( { 'dbd' => 'mysql' } );
 
@@ -87,7 +88,7 @@ $sth = $dbh->prepare( $sql );
 
 ok( $sth->execute(), 'Retrieve a record from the users table.' );
 
-done_testing();
+##############
 
 say "+" x 70;
 
