@@ -35,7 +35,7 @@ declare DBPort, as Optional[Int],
   message { 'The port number must be an integer. ' };
 
 declare DBPrefix, as Optional[StrMatch[ qr/ \w+_ /x ]],
-  message { 'The table prefix must end in an underscore. ' };
+  message { return 'The table prefix must end in an underscore. ' };
 
 1; ## return true to end package CMS::Drupal::Types
 __END__
@@ -53,12 +53,13 @@ CMS::Drupal::Types - A Perl type library for working with Drupal
 
 =head1 USAGE
 
-You can use this module to import Type::Tiny-style types relevant to Drupal into your program. Use the syntax shown above and the types will be available as object attributes.
+You can use this module to import Type::Tiny-style types relevant to Drupal
+into your program. Use the syntax shown above and the types will be available
+as object attributes.
 
 If you want to use the types to validate parameters passed to a method or a sub, use the following syntax as an example:
 
-
-  use CMS::Drupal::Types qw/ DBName DBDriver DBUsername DBPassword DBHost DBPort DBPrefix /;
+  use CMS::Drupal::Types qw/ DBName DBDriver DBUsername DBPassword /;
   use Types::Standard    qw/ Optional Maybe Str StrMatch Int slurpy Dict /;
   use Type::Params       qw/ compile /;
 
@@ -69,9 +70,6 @@ If you want to use the types to validate parameters passed to a method or a sub,
       driver   => DBDriver,
       username => DBUsername,
       password => DBPassword,
-      host     => DBHost,
-      port     => DBPort,
-      prefix   => DBPrefix,
     );
    
     for( keys %$args ) {
@@ -108,7 +106,7 @@ B<DBPrefix>
 =head1 AUTHOR
  
 Author: Nick Tonkin (tonkin@cpan.org)
- 
+
 =head1 COPYRIGHT
  
 Copyright (c) 2015 Nick Tonkin. All rights reserved.
