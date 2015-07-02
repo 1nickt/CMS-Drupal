@@ -13,7 +13,6 @@ use Type::Params       qw/ compile /;
 
 use DBI;
 use Carp qw/ confess croak /;
-use Data::Dumper;
 
 sub dbh {
   my $self = shift;
