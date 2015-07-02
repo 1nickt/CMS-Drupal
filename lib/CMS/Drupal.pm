@@ -62,7 +62,9 @@ CMS::Drupal -- Perl interface to the Drupal CMS
  
  use CMS::Drupal;           
 
- my $drupal = CMS::Drupal->new(
+ my $drupal = CMS::Drupal->new();
+
+ my $database_handle = CMS::Drupal->dbh(
   'database' => "my_db",
   'driver'   => "mysql",
   'username' => "my_user",
@@ -72,22 +74,18 @@ CMS::Drupal -- Perl interface to the Drupal CMS
   'prefix"   => "myapp_"
  );
 
- my $database_handle = $drupal->dbh;
- 
 =head1 DESCRIPTION
 
 This module provides a Perl interface to a Drupal CMS website.
 
 Since you can't do anything with Drupal until you can talk to the database,
-this module takes the database credentials as parameters to the object
-constructor.
+this module doesn't do anthing with the constructor but return a new object.
+You can get a database handle to your Drupal by calling ->dbh() with your
+database credentials as parameters.
 
 You will need the appropriate DBI driver installed to connect to your
 database. The DBI will hint at what you need if you don't have it, so
 long as you set the 'driver' parameter correctly.
-
-The database handle is returned by the $drupal->dbh() method call.
-
 
 =head1 FUNCTIONALITY
 
@@ -102,7 +100,13 @@ that.
 
 Use the module as shown in the Synopsis above.
 
-=head2 PARAMETERS
+=head1 METHODS
+
+=head2 dbh
+
+Returns a database handle connected to your Drupal DB.
+
+=head3 Parameters
 
 B<database>
  The name of your Drupal database. Required.
@@ -125,6 +129,56 @@ B<port>
 B<prefix>
  The prefix that you set in Drupal for your DB table names (if any).
  Optional. Must be at least two characters and end with a "_").
+
+=head3 Testing
+
+The following is taken from t/Drupal02.t and explains how to have this 
+module test against your actual Drupal installation.
+
+=over4
+
+ B<Quote>
+ This is t/Drupal02.t It tests the CMS::Drupal module against a real Drupal
+ database. It looks in your environment to see if you have provided
+ connection information.
+
+ So if you want to test against your Drupal DB, you must set the variable
+
+ DRUPAL_TEST_CREDS
+
+ in your environment, exactly as follows:
+
+ required fields are 
+   database - name of your DB
+   driver   - your dbi:driver ... mysql, Pg or SQLite
+
+ optional fields are
+   user     - your DB user name
+   password - your DB password
+   host     - your DB server hostname
+   port     - which port to connect on
+   prefix   - your database table schema prefix, if any
+
+ All these fields and values must be joined together in one string with no
+ spaces, and separated with commas.
+
+ Examples:
+
+ database,foo,driver,SQLite
+ database,foo,driver,Pg
+ database,foo,driver,mysql,user,bar,password,baz,host,localhost,port,3306,prefix,My_
+
+ You can set an environment variable in many ways. To make it semi permanent,
+ put it in your .bashrc or .bash_profile or whatever you have.
+
+ If you just want to run this test once, you can just do this from your
+ command prompt:
+
+ $ DRUPAL_TEST_CREDS=database,foo,driver,SQLite; perl ./Drupal_02.t
+
+ B<End Quote>
+
+=back
 
 =head1 AUTHOR
  
