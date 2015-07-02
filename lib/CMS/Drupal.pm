@@ -135,7 +135,7 @@ B<prefix>
 The following is taken from t/Drupal02.t and explains how to have this 
 module test against your actual Drupal installation.
 
-=over4
+=over 4
 
  B<Quote>
  This is t/Drupal02.t It tests the CMS::Drupal module against a real Drupal
