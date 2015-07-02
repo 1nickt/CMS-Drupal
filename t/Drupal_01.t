@@ -2,7 +2,7 @@
 
 use strict;
 use warnings;
-use feature qw/ say /;
+use 5.010;
 
 use Test::More tests => 17;
 
