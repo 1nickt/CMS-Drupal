@@ -55,7 +55,7 @@ my $me = abs_path($0);
 
 use CMS::Drupal;
 
-use Test::More tests => 4;
+use Test::More tests => 5;
 
 say '+' x 70;
 say "CMS::Drupal test 02 - Database tests.";
@@ -82,11 +82,12 @@ if ( exists $ENV{'DRUPAL_TEST_CREDS'} ) {
 }
 
 SKIP: {
-    skip "No database credentials supplied", 4, if $skip;
+    skip "No database credentials supplied", 5, if $skip;
 
  ###########
 
- ok( my $dbh = $drupal->dbh( %params ), 'Get a dbh with the credentials.' );
+ ok( my $dbh = $drupal->dbh( %params ),
+   'Get a dbh with the credentials.' );
 
  ###########
 
@@ -109,7 +110,8 @@ SKIP: {
                        init
                        data /;
 
- is_deeply( [ sort @cols ], [ sort @wanted_cols ], 'Get correct column names from users table.');
+ is_deeply( [ sort @cols ], [ sort @wanted_cols ],
+   'Get correct column names from users table.');
 
  ###########
 
@@ -130,20 +132,26 @@ SKIP: {
                     tnid
                     translate /;
 
- is_deeply( [ sort @cols ], [ sort @wanted_cols ], 'Get correct column names from node table.');
+ is_deeply( [ sort @cols ], [ sort @wanted_cols ],
+   'Get correct column names from node table.');
 
  ############
 
+ # We know there is at least one user in a working Drupal
+ #
  my $sql = qq|
-   SELECT uid, name, pass, mail, created, access, login, status
+   SELECT COUNT(uid) as count
    FROM users
-   LIMIT 1
  |;
 
  $sth = $dbh->prepare( $sql );
 
- ok( $sth->execute(), 'Retrieve a record from the users table.' );
-
+ ok( $sth->execute(), 
+   'Execute a SELECT on the users table.');
+ 
+ ok( $sth->fetchrow_hashref->{'count'} > 0,
+   'SELECT COUNT(uid) from users > 0' );
+ 
  ##############
 
  say "+" x 70;
