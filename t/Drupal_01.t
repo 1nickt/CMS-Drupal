@@ -7,7 +7,7 @@ use 5.010;
 use Test::More tests => 17;
 
 say '-' x 78;
-say "CMS::Drupal test 01 - object and parameter validation.\n";
+say "CMS::Drupal test 01 - object and parameter validation\n";
 
 use_ok( 'CMS::Drupal',
   'use() the module.' );

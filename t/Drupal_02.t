@@ -58,7 +58,7 @@ use CMS::Drupal;
 use Test::More tests => 5;
 
 say '-' x 78;
-say "CMS::Drupal test 02 - Database tests.\n";
+say "CMS::Drupal test 02 - database tests\n";
 
 my $drupal = CMS::Drupal->new;
 my %params;
