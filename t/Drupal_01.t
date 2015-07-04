@@ -6,7 +6,7 @@ use 5.010;
 
 use Test::More tests => 17;
 
-say "+" x 70;
+say "+" x 78;
 say "CMS::Drupal test 01 - object and parameter validation.";
 
 use_ok( 'CMS::Drupal',
@@ -61,5 +61,5 @@ ok( ! eval{ $drupal->dbh(database => 'foo', prefix  => '_') },
 ok( ! eval{ $drupal->dbh(database => 'foo', prefix  => '') },
   'Correctly fail to connect with empty string for prefix.' );
 
-say "+" x 70;
+say "+" x 78;
 

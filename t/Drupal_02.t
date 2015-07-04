@@ -57,7 +57,7 @@ use CMS::Drupal;
 
 use Test::More tests => 5;
 
-say '+' x 70;
+say '+' x 78;
 say "CMS::Drupal test 02 - Database tests.";
 
 my $drupal = CMS::Drupal->new;
@@ -154,8 +154,8 @@ SKIP: {
  
  ##############
 
- say "+" x 70;
-
 } # end SKIP block
+
+say "+" x 78;
 
 __END__
