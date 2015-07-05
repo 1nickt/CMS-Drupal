@@ -16,10 +16,9 @@ can_ok( 'CMS::Drupal', 'new' );
 
 my $drupal = CMS::Drupal->new;
 
-ok( defined $drupal,
-  'Get something from Drupal->new().' );
-
 isa_ok( $drupal, 'CMS::Drupal' );
+
+can_ok( 'CMS::Drupal', 'dbh' );
 
 ok( ! eval{ $drupal->dbh(driver => 'bar') },
   'Correctly fail to connect with missing database param.' );
