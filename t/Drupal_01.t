@@ -10,7 +10,7 @@ use Test::More tests => 17;
 
 BEGIN {
   use_ok( 'CMS::Drupal',
-    'use() the module.' ) or die;
+    'use() CMS::Drupal' ) or die;
 }
 
 my $drupal = CMS::Drupal->new;
@@ -18,8 +18,7 @@ my $drupal = CMS::Drupal->new;
 ok( defined $drupal,
   'Get something from Drupal->new().' );
 
-isa_ok( $drupal, "CMS::Drupal",
-  '$drupal is of the correct class.' );
+isa_ok( $drupal, "CMS::Drupal" );
 
 ok( ! eval{ $drupal->dbh(driver => 'bar') },
   'Correctly fail to connect with missing database param.' );
