@@ -53,14 +53,18 @@ use 5.010;
 use Cwd qw/ abs_path /;
 my $me = abs_path($0);
 
-use CMS::Drupal;
+use Test::More tests => 8;
 
-use Test::More tests => 5;
+# CMS::Drupal test 02 - database tests
 
-say '-' x 78;
-say "CMS::Drupal test 02 - database tests\n";
+BEGIN {
+  use_ok( 'CMS::Drupal',
+    'use CMS::Drupal' ) or die;
+}
 
 my $drupal = CMS::Drupal->new;
+isa_ok( $drupal, "CMS::Drupal" );
+
 my %params;
 my $skip = 0;
 
@@ -82,12 +86,14 @@ if ( exists $ENV{'DRUPAL_TEST_CREDS'} ) {
 }
 
 SKIP: {
-    skip "No database credentials supplied", 5, if $skip;
+    skip "No database credentials supplied", 6, if $skip;
 
  ###########
 
  ok( my $dbh = $drupal->dbh( %params ),
    'Get a dbh with the credentials.' );
+
+ isa_ok( $dbh, "DBI::db" );
 
  ###########
 
