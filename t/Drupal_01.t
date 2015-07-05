@@ -4,14 +4,15 @@ use strict;
 use warnings;
 use 5.010;
 
-use Test::More tests => 17;
+use Test::More tests => 18;
 
 # CMS::Drupal test 01 - object and parameter validation
 
 BEGIN {
-  use_ok( 'CMS::Drupal',
-    'use() CMS::Drupal' ) or die;
+  use_ok( 'CMS::Drupal' ) or die;
 }
+
+can_ok( 'CMS::Drupal', 'new' );
 
 my $drupal = CMS::Drupal->new;
 
