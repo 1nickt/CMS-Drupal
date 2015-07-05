@@ -18,7 +18,7 @@ my $drupal = CMS::Drupal->new;
 ok( defined $drupal,
   'Get something from Drupal->new().' );
 
-isa_ok( $drupal, "CMS::Drupal" );
+isa_ok( $drupal, 'CMS::Drupal' );
 
 ok( ! eval{ $drupal->dbh(driver => 'bar') },
   'Correctly fail to connect with missing database param.' );
