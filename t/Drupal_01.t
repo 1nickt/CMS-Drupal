@@ -6,18 +6,20 @@ use 5.010;
 
 use Test::More tests => 17;
 
-say '-' x 78;
-say "CMS::Drupal test 01 - object and parameter validation\n";
+# CMS::Drupal test 01 - object and parameter validation
 
-use_ok( 'CMS::Drupal',
-  'use() the module.' );
+BEGIN {
+  use_ok( 'CMS::Drupal',
+    'use() the module.' ) or die;
+}
 
 my $drupal = CMS::Drupal->new;
+
 ok( defined $drupal,
   'Get something from Drupal->new().' );
 
-ok( $drupal->isa('CMS::Drupal'),
-  'The object is of the correct class.' );
+isa_ok( $drupal, "CMS::Drupal",
+  '$drupal is of the correct class.' );
 
 ok( ! eval{ $drupal->dbh(driver => 'bar') },
   'Correctly fail to connect with missing database param.' );
