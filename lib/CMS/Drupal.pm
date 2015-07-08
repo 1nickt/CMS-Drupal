@@ -79,7 +79,7 @@ CMS::Drupal -- Perl interface to the Drupal CMS
 This module provides a Perl interface to a Drupal CMS website.
 
 Since you can't do anything with Drupal until you can talk to the database,
-this module doesn't do anthing with the constructor but return a new object.
+this module doesn't do anything with the constructor but return a new object.
 You can get a database handle to your Drupal by calling ->dbh() with your
 database credentials as parameters.
 
