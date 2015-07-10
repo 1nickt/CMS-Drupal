@@ -1,8 +1,13 @@
-#!/usr/bin/env perl
+#! perl
+use strict;
+use warnings;
+use 5.010;
 
 ##############################################################################
 #
-# This is t/Drupal02.t It tests the CMS::Drupal module against a real Drupal
+# This is t/20_valid_drupal.t
+#
+# It tests the CMS::Drupal module against a real Drupal
 # database. It looks in your environment to see if you have provided
 # connection information.
 #
@@ -38,7 +43,8 @@
 # If you just want to run this test once, you can just do this from your
 # command prompt:
 #
-# $ DRUPAL_TEST_CREDS=database,foo,driver,SQLite; perl ./Drupal_02.t
+# $ DRUPAL_TEST_CREDS=database,foo,driver,SQLite;
+# $ perl t/20_valid_drupal.t
 #
 #
 # Alrighty then, good luck. If this seems complicated, don't worry about it.
@@ -46,21 +52,13 @@
 #
 #############################################################################
 
-use strict;
-use warnings;
-use 5.010;
-
 use Cwd qw/ abs_path /;
 my $me = abs_path($0);
 
 use Test::More tests => 9;
 
-# CMS::Drupal test 02 - database tests
-
 BEGIN {
-
   use_ok( 'CMS::Drupal' ) or die;
-
 }
 
 can_ok( 'CMS::Drupal', 'new' );
@@ -165,6 +163,5 @@ SKIP: {
 
 } # end SKIP block
 
-say '-' x 78;
-
 __END__
+

@@ -1,12 +1,9 @@
-#!/usr/bin/env perl
-
+#! perl
 use strict;
 use warnings;
 use 5.010;
 
 use Test::More tests => 18;
-
-# CMS::Drupal test 01 - object and parameter validation
 
 BEGIN {
   use_ok( 'CMS::Drupal' ) or die;
@@ -62,6 +59,5 @@ ok( ! eval{ $drupal->dbh(database => 'foo', driver => 'Pg', prefix  => '_') },
 ok( ! eval{ $drupal->dbh(database => 'foo', driver => 'Pg', prefix  => '') },
   'Correctly fail to connect with empty string for prefix.' );
 
-say '-' x 78;
-
 __END__
+
