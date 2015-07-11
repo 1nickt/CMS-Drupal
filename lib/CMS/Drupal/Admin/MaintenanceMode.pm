@@ -81,17 +81,28 @@ CMS::Drupal::Admin::MaintenanceMode
 
 =head1 SYNOPSIS
 
- use CMS::Drupal::Admin::MaintenanceMode;
+  use CMS::Drupal::Admin::MaintenanceMode qw/ -all /;
 
- $on = 'yes' if maintenance_mode_check($dbh);
+  my $on = 'yes' if maintenance_mode_check($dbh);
  
- maintenance_mode_on($dbh);
+  maintenance_mode_on($dbh);
 
- maintenance_mode_off($dbh);
+  maintenance_mode_off($dbh);
 
 =head1 DESCRIPTION
 
-foo bar
+This module provides methods to check whether your Drupal site is
+currently in maintenance mode, and to put it into and take it out
+of maintenance mode.
+
+You might like to put the site into maintenance mode before running
+a script that reads from the DB, or perhaps you would like to have
+a monitoring tool able to shut off public access to the site if
+something bad happens.
+
+Note that this and all CMS::Drupal::* Perl packages interact with
+the database directly, not with the website. You must have the 
+user credentials for your database in order to use these tools.
 
 =head1 USAGE
 
@@ -103,9 +114,21 @@ Use the module as shown in the SYNOPSIS.
 
 =item maintenance_mode_check
 
+Returns 1 if the site is currently in maintenance mode, otherwise
+returns 0. Take one argument; your active $dbh.
+
 =item maintenance_mode_on
 
+Puts the site into maintenance mode. Returns 1 if there was no failure;
+i.e. the site was successfully put into, or already was in, maintenance
+mode. Returns 0 on DB error. Takes one argument; your active $dbh.
+
 =item maintenance_mode_off
+
+Takes the site out of maintenance mode. Returns 1 if there was no 
+failure; i.e. the site was successfully taken out of, or was already
+not in, maintenance mode. Returns 0 on DB error. Takes one argument;
+your active $dbh.
 
 =back
 
