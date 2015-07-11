@@ -88,7 +88,7 @@ if ( exists $ENV{'DRUPAL_TEST_CREDS'} ) {
 }
 
 SKIP: {
-    skip "No database credentials supplied", 5, if $skip;
+    skip "No database credentials supplied", 6, if $skip;
 
  ###########
 
