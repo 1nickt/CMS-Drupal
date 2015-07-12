@@ -4,7 +4,6 @@ package CMS::Drupal;
 
 use strict;
 use warnings;
-use 5.010;
 
 use Moo;
 use Types::Standard    qw/ Optional Maybe Str Int slurpy Dict /;
@@ -52,27 +51,21 @@ sub dbh {
 1; ## return true to end package CMS::Drupal
 __END__
 
-=pod
- 
-=head1 NAME
- 
-CMS::Drupal -- Perl interface to the Drupal CMS
- 
 =head1 SYNOPSIS
  
- use CMS::Drupal;           
+  use CMS::Drupal;           
 
- my $drupal = CMS::Drupal->new();
+  my $drupal = CMS::Drupal->new();
 
- my $database_handle = CMS::Drupal->dbh(
-  'database' => "my_db",
-  'driver'   => "mysql",
-  'username' => "my_user",
-  'password' => "my_password",
-  'host'     => "my_host",
-  'port'     => "3306",
-  'prefix"   => "myapp_"
- );
+  my $database_handle = CMS::Drupal->dbh(
+    'database' => "my_db",
+    'driver'   => "mysql",
+    'username' => "my_user",
+    'password' => "my_password",
+    'host'     => "my_host",
+    'port'     => "3306",
+    'prefix"   => "myapp_"
+  );
 
 =head1 DESCRIPTION
 
@@ -100,45 +93,42 @@ that.
 
 Use the module as shown in the Synopsis above.
 
-=head1 METHODS
+=method new
 
-=head2 dbh
+Instantiates an object in the CMS::Drupal class.
+
+=method dbh
 
 Returns a database handle connected to your Drupal DB.
 
 =head3 Parameters
 
-B<database>
- The name of your Drupal database. Required.
-
-B<driver>
- The DBI driver for your database. Required, from [mysql|Pg|SQLite].
-
-B<username>
- The database username. Optional. Must be a string if supplied.
-
-B<password>
- The database password. Optional. Must be a string if supplied.
-
-B<host>
- The server where the DB lives. Optional. Must be a string if supplied.
-
-B<port>
- The port on which to connect. Optional. Must be an integer if supplied.
-
-B<prefix>
- The prefix that you set in Drupal for your DB table names (if any).
- Optional. Must be at least two characters and end with a "_").
+=for :list
+* database
+The name of your Drupal database. Required.
+* driver
+The DBI driver for your database. Required, from [mysql|Pg|SQLite].
+* username
+The database username. Optional. Must be a string if supplied.
+* password
+The database password. Optional. Must be a string if supplied.
+* host
+The server where the DB lives. Optional. Must be a string if supplied.
+* port 
+port on which to connect. Optional. Must be an integer if supplied.
+* prefix
+The prefix that you set in Drupal for your DB table names (if any). Optional. Must be at least two characters and end with a "_").
 
 =head3 Testing
 
-The following is taken from t/Drupal02.t and explains how to have this 
+The following is taken from t/20_valid_drupal.t and explains how to have this 
 module test against your actual Drupal installation.
+
+B<Quote>
 
 =over 4
 
- B<Quote>
- This is t/Drupal02.t It tests the CMS::Drupal module against a real Drupal
+ This is t/20_valid_drupal.t It tests the CMS::Drupal module against a real Drupal
  database. It looks in your environment to see if you have provided
  connection information.
 
@@ -174,27 +164,14 @@ module test against your actual Drupal installation.
  If you just want to run this test once, you can just do this from your
  command prompt:
 
- $ DRUPAL_TEST_CREDS=database,foo,driver,SQLite; perl ./Drupal_02.t
-
- B<End Quote>
+ $ DRUPAL_TEST_CREDS=database,foo,driver,SQLite
+ $ perl t/20_valid_drupal.t
 
 =back
 
-=head1 AUTHOR
- 
-Author: Nick Tonkin (tonkin@cpan.org)
-
-=head1 COPYRIGHT
- 
-Copyright (c) 2015 Nick Tonkin. All rights reserved.
- 
-=head1 LICENSE
- 
-You may distribute this module under the same license as Perl itself.
+B<End Quote>
  
 =head1 SEE ALSO
 
 L<CMS::Drupal::Types|CMS::Drupal::Types>
-
-=cut
 

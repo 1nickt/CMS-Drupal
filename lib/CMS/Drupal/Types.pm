@@ -4,7 +4,6 @@ package CMS::Drupal::Types;
 
 use strict;
 use warnings;
-use 5.010;
 
 use Type::Library -base, -declare => qw/ DBName
                                          DBDriver
@@ -40,12 +39,6 @@ declare DBPrefix, as Optional[StrMatch[ qr/ \w+_ /x ]],
 1; ## return true to end package CMS::Drupal::Types
 __END__
 
-=pod
-
-=head1 NAME
-
-CMS::Drupal::Types - A Perl type library for working with Drupal
-
 =head1 SYNOPSIS
 
   use Types::Standard;
@@ -75,7 +68,7 @@ If you want to use the types to validate parameters passed to a method or a sub,
     for( keys %$args ) {
       my $validate = compile( slurpy Dict [ $_ => $types{$_} ]);
       my ($param) = $validate->( $_ => $args->{$_} );
-      say "$_: '$args->{$_}' passed";
+      print "$_: '$args->{$_}' passed";
     }
   }
 
@@ -102,30 +95,12 @@ B<DBPort>
 B<DBPrefix>
  Must be a string ending in an underscore if present. May be omitted.
 
-
-=head1 AUTHOR
- 
-Author: Nick Tonkin (tonkin@cpan.org)
-
-=head1 COPYRIGHT
- 
-Copyright (c) 2015 Nick Tonkin. All rights reserved.
- 
-=head1 LICENSE
- 
-You may distribute this module under the same license as Perl itself.
- 
 =head1 SEE ALSO
 
-L<CMS::Drupal|CMS::Drupal>.
-
-L<Type::Tiny|Type::Tiny>
-
-L<Type::Library|Type::Library>
-
-L<Types::Standard|Types::Standard>
-
-L<Type::Params|Type::Params>
-
-=cut
+=for :list
+* L<CMS::Drupal|CMS::Drupal>
+* L<Type::Tiny|Type::Tiny>
+* L<Type::Library|Type::Library>
+* L<Types::Standard|Types::Standard>
+* L<Type::Params|Type::Params>
 

@@ -3,7 +3,6 @@ package CMS::Drupal::Admin::MaintenanceMode;
 # ABSTRACT: Put your Drupal site into Maintenance Mode, or take it out
 
 use strict;
-use 5.010;
 
 use base "Exporter::Tiny";
 our @EXPORT = qw/ maintenance_mode_check
@@ -72,12 +71,7 @@ sub maintenance_mode_off {
 }
 
 1; # return true
-
-=pod
-
-=head1 NAME
-
-CMS::Drupal::Admin::MaintenanceMode
+__END__
 
 =head1 SYNOPSIS
 
@@ -108,29 +102,21 @@ user credentials for your database in order to use these tools.
 
 Use the module as shown in the SYNOPSIS.
 
-=head2 METHODS
-
-=over 4
-
-=item maintenance_mode_check
+=method maintenance_mode_check
 
 Returns 1 if the site is currently in maintenance mode, otherwise
 returns 0. Take one argument; your active $dbh.
 
-=item maintenance_mode_on
+=method maintenance_mode_on
 
 Puts the site into maintenance mode. Returns 1 if there was no failure;
 i.e. the site was successfully put into, or already was in, maintenance
 mode. Returns 0 on DB error. Takes one argument; your active $dbh.
 
-=item maintenance_mode_off
+=method maintenance_mode_off
 
 Takes the site out of maintenance mode. Returns 1 if there was no 
 failure; i.e. the site was successfully taken out of, or was already
 not in, maintenance mode. Returns 0 on DB error. Takes one argument;
 your active $dbh.
-
-=back
-
-=cut
 

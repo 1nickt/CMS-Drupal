@@ -7,14 +7,7 @@ use strict;
 # nothing here
 
 1; #return true
-
 __END__
-
-=pod
-
-=head1 NAME
-
-CMS::Drupal::Admin
 
 =head1 SYNOPSIS
 
