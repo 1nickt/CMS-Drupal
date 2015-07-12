@@ -23,13 +23,13 @@ sub dbh {
   confess "Fatal error! No dbi:driver provided! "    unless exists $args->{'driver'};
 
   my %types = (
-    database => DBName,
-    driver   => DBDriver,
-    username => DBUsername,
-    password => DBPassword,
-    host     => DBHost,
-    port     => DBPort,
-    prefix   => DBPrefix,
+    'database' => DBName,
+    'driver'   => DBDriver,
+    'username' => DBUsername,
+    'password' => DBPassword,
+    'host'     => DBHost,
+    'port'     => DBPort,
+    'prefix'   => DBPrefix,
   );
 
   for ( keys %{$args} ) {

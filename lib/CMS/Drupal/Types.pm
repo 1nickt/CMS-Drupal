@@ -59,10 +59,10 @@ If you want to use the types to validate parameters passed to a method or a sub,
   sub my_sub {
     my $args = { @_ };
     my %types = (
-      database => DBName,
-      driver   => DBDriver,
-      username => DBUsername,
-      password => DBPassword,
+      'database' => DBName,
+      'driver'   => DBDriver,
+      'username' => DBUsername,
+      'password' => DBPassword,
     );
    
     for( keys %$args ) {
