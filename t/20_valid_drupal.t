@@ -79,7 +79,8 @@ if ( exists $ENV{'DRUPAL_TEST_CREDS'} ) {
 
   If you want to run these tests in the future,
   set the value of DRUPAL_TEST_CREDS in your ENV as
-  documented in the source of this file, $me
+  documented in the source of this file,
+  $me
 
 EOT
 
