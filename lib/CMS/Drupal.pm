@@ -64,7 +64,7 @@ __END__
     'password' => "my_password",
     'host'     => "my_host",
     'port'     => "3306",
-    'prefix"   => "myapp_"
+    'prefix'   => "myapp_"
   );
 
 =head1 DESCRIPTION
