@@ -105,7 +105,7 @@ Use the module as shown in the SYNOPSIS.
 =method maintenance_mode_check
 
 Returns 1 if the site is currently in maintenance mode, otherwise
-returns 0. Take one argument; your active $dbh.
+returns 0. Takes one argument; your active $dbh.
 
 =method maintenance_mode_on
 
