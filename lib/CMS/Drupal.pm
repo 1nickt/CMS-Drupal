@@ -18,7 +18,9 @@ sub dbh {
   my $self = shift;
   return $self->{'_dbh'} if defined( $self->{'_dbh'} );
 
-  my $args = (exists $ENV{'DRUPAL_TEST_CREDS'}) ?
+  # We want to be able to run with no params if we have them in the env. But
+  # we don't want to use those creds when we are running certain tests
+  my $args = (exists $ENV{'DRUPAL_TEST_CREDS'} and ! exists $ENV{'DRUPAL_TESTING'}) ?
                { split(',', $ENV{'DRUPAL_TEST_CREDS'}) } :
                { @_ };
 

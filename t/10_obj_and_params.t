@@ -5,8 +5,11 @@ use warnings;
 use Test::More tests => 18;
 
 BEGIN {
+  $ENV{'DRUPAL_TESTING'} = 1;
   use_ok( 'CMS::Drupal' ) or die;
 }
+
+
 
 can_ok( 'CMS::Drupal', 'new' );
 
@@ -57,6 +60,10 @@ ok( ! eval{ $drupal->dbh(database => 'foo', driver => 'Pg', prefix  => '_') },
 
 ok( ! eval{ $drupal->dbh(database => 'foo', driver => 'Pg', prefix  => '') },
   'Correctly fail to connect with empty string for prefix.' );
+
+END {
+  delete $ENV{'DRUPAL_TESTING'};
+}
 
 __END__
 
