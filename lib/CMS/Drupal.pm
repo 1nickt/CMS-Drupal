@@ -12,12 +12,15 @@ use Type::Params       qw/ compile /;
 
 use DBI;
 use Carp qw/ confess croak /;
+use Data::Dumper;
 
 sub dbh {
   my $self = shift;
   return $self->{'_dbh'} if defined( $self->{'_dbh'} );
 
-  my $args = { @_ };
+  my $args = (exists $ENV{'DRUPAL_TEST_CREDS'}) ?
+               { split(',', $ENV{'DRUPAL_TEST_CREDS'}) } :
+               { @_ };
 
   confess "Fatal error! No database name provided! " unless exists $args->{'database'};
   confess "Fatal error! No dbi:driver provided! "    unless exists $args->{'driver'};
@@ -57,7 +60,7 @@ __END__
 
   my $drupal = CMS::Drupal->new();
 
-  my $database_handle = CMS::Drupal->dbh(
+  my $database_handle = $drupal->dbh(
     'database' => "my_db",
     'driver'   => "mysql",
     'username' => "my_user",
@@ -79,15 +82,6 @@ database credentials as parameters.
 You will need the appropriate DBI driver installed to connect to your
 database. The DBI will hint at what you need if you don't have it, so
 long as you set the 'driver' parameter correctly.
-
-=head1 FUNCTIONALITY
-
-As of this writing, all the author needs is a DB handle in order to use other
-CMS::Drupal::* modules. You are welcome to contribute code if you want this
-module to do anything else. For example, many CMS interfaces allow you to put
-the CMS into "maintenance mode," so you can work on the database with the
-site off-line. It would be relatively simple to add methods for tasks such as
-that.
 
 =head1 USAGE
 
@@ -173,5 +167,7 @@ B<End Quote>
  
 =head1 SEE ALSO
 
-L<CMS::Drupal::Types|CMS::Drupal::Types>
+=for :list
+* L<CMS::Drupal::Types|CMS::Drupal::Types>
+* L<CMS::Drupal::Admin|CMS::Drupal::Admin>
 
