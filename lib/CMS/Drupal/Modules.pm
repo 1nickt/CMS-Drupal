@@ -59,3 +59,17 @@ We'll just pretend that it's a Commerce core module and put your Perl package in
 
   CMS::Drupal::Modules::Commerce::AddressBook.pm
 
+=head1 TESTING
+
+  The parent module L<CMS::Drupal|CMS::Drupal> has a feature enabling automatic connection if your Drupal credentials are set
+  in the environment variable DRUPAL_TEST_CREDS ... this is not recommended for production systems
+  because of the obvious security risk. But it is handy for testing your module against a test database.
+
+  See the documentation for L<CMS::Drupal|CMS::Drupal> for more information.
+
+=head1 SEE ALSO
+
+=for :list
+* L<CMS::Drupal|CMS::Drupal>
+
+

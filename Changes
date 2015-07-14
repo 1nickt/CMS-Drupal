@@ -4,6 +4,11 @@ Changes from 2014-07-11 00:00:00 +0000 to present.
 
 {{$NEXT}}
 
+Update always-on connectability to match
+CMS::Drupal::Modules, add more documentation
+
+0.90      2015-07-14 05:39:03-07:00 America/Los_Angeles
+
 Make connecting always available with the environment
 variable DRUPAL_TEST_CREDS if it is set
 

@@ -20,7 +20,7 @@ sub dbh {
 
   # We want to be able to run with no params if we have them in the env. But
   # we don't want to use those creds when we are running certain tests
-  my $args = (exists $ENV{'DRUPAL_TEST_CREDS'} and ! exists $ENV{'DRUPAL_TESTING'}) ?
+  my $args = (exists $ENV{'DRUPAL_TEST_CREDS'} and ! exists $ENV{'DRUPAL_IGNORE_TEST_CREDS'}) ?
                { split(',', $ENV{'DRUPAL_TEST_CREDS'}) } :
                { @_ };
 
@@ -167,6 +167,15 @@ B<Quote>
 
 B<End Quote>
  
+If you leave the environment variable set, in future you won't have to supply
+any credentials when calling this module's ->dbh() method:
+
+  my $drupal = CMS::Drupal->new;
+  my $dbh    = $drupal->dbh; # fatal error usually
+
+It is not recommended to keep your credentials for a production database in
+your environment as it's pretty easy to read it ...
+
 =head1 SEE ALSO
 
 =for :list
