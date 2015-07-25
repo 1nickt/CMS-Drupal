@@ -12,13 +12,12 @@ use Type::Params       qw/ compile /;
 
 use DBI;
 use Carp qw/ confess croak /;
-use Data::Dumper;
 
 sub dbh {
   my $self = shift;
   return $self->{'_dbh'} if defined( $self->{'_dbh'} );
 
-  # We want to be able to run with no params if we have them in the env. But
+  # We want to accept no params if we have the values in the env. But
   # we don't want to use those creds when we are running certain tests
   my $args = (exists $ENV{'DRUPAL_TEST_CREDS'} and ! exists $ENV{'DRUPAL_IGNORE_TEST_CREDS'}) ?
                { split(',', $ENV{'DRUPAL_TEST_CREDS'}) } :
@@ -37,17 +36,17 @@ sub dbh {
     'prefix'   => DBPrefix,
   );
 
-  for ( keys %{$args} ) {
+  for ( keys %{ $args } ) {
     next unless exists $types{ $_ }; # throw away unknown params
-    my $validate = compile( slurpy Dict [ $_ => $types{$_} ]);
-    my ($param) = $validate->( $_ => $args->{$_} );
+    my $validate = compile( slurpy Dict [ $_ => $types{ $_ } ]);
+    my ( $param ) = $validate->( $_ => $args->{ $_ } );
   }
 
-  my $dsn = join(':', 'dbi', $args->{'driver'}, $args->{'database'});
-  exists $args->{'host'} and $dsn .= (';host=' . $args->{'host'});
-  exists $args->{'port'} and $dsn .= (';port=' . $args->{'port'});
-  my $username = (exists $args->{'username'} ? $args->{'username'} : '');
-  my $password = (exists $args->{'password'} ? $args->{'password'} : '');
+  my $dsn = join( ':', 'dbi', $args->{'driver'}, $args->{'database'} );
+  exists $args->{'host'} and $dsn .= ";host=$args->{'host'}";
+  exists $args->{'port'} and $dsn .= ";port=$args->{'port'}";
+  my $username = exists $args->{'username'} ? $args->{'username'} : '';
+  my $password = exists $args->{'password'} ? $args->{'password'} : '';
   $self->{'_dbh'} = DBI->connect( $dsn, $username, $password, { 'RaiseError' => 1 } );
 
   return $self->{'_dbh'};
