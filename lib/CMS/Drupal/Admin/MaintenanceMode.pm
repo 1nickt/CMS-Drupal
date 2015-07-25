@@ -3,6 +3,7 @@ package CMS::Drupal::Admin::MaintenanceMode;
 # ABSTRACT: Put your Drupal site into Maintenance Mode, or take it out
 
 use strict;
+use warnings;
 
 use base "Exporter::Tiny";
 our @EXPORT = qw/ maintenance_mode_check
@@ -18,8 +19,7 @@ sub maintenance_mode_check {
     WHERE name = 'maintenance_mode'
   |;
 
-  return ($dbh->selectrow_array( $sql ) eq 'i:1;')
-    ? 1 : 0;
+  return ( $dbh->selectrow_array( $sql ) eq 'i:1;' ) ? 1 : 0;
 }
 
 sub maintenance_mode_on {
@@ -42,8 +42,7 @@ sub maintenance_mode_on {
 
   # cache_bootstrap may not have an entry
   # for 'variables' so we allow 0E0
-  return ($rv1 > 0  and $rv2 >= 0)
-    ? 1 : 0;
+  return ( $rv1 > 0  and $rv2 >= 0 ) ? 1 : 0;
 }
 
 sub maintenance_mode_off {
@@ -66,8 +65,7 @@ sub maintenance_mode_off {
 
   # cache_bootstrap may not have an entry
   # for 'variables' so we allow 0E0
-  return ($rv1 > 0 and $rv2 >= 0)
-    ? 1 : 0;
+  return ( $rv1 > 0 and $rv2 >= 0 ) ? 1 : 0;
 }
 
 1; # return true
