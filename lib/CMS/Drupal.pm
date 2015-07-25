@@ -84,10 +84,6 @@ You will need the appropriate DBI driver installed to connect to your
 database. The DBI will hint at what you need if you don't have it, so
 long as you set the 'driver' parameter correctly.
 
-=head1 USAGE
-
-Use the module as shown in the Synopsis above.
-
 =method new
 
 Instantiates an object in the CMS::Drupal class.
