@@ -33,7 +33,7 @@ declare DBHost, as Optional[Str],
 declare DBPort, as Optional[Int],
   message { 'The port number must be an integer. ' };
 
-declare DBPrefix, as Optional[Str]],
+declare DBPrefix, as Optional[Str],
   message { return 'The table prefix must be a string. ' };
 
 1; ## return true to end package CMS::Drupal::Types
