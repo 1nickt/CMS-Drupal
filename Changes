@@ -4,6 +4,12 @@ Changes from 2014-07-11 00:00:00 +0000 to present.
 
 {{$NEXT}}
 
+Allow any string as the table prefix
+
+Implement Test::Exception in the test suite
+
+0.92      2015-07-25 15:31:02-07:00 America/Los_Angeles
+
 Syntax cleanup.
 
 0.91      2015-07-14 09:23:44-07:00 America/Los_Angeles
