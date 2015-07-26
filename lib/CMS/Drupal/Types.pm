@@ -93,7 +93,7 @@ B<DBPort>
  Must be an integer if present. May be empty. May be omitted.
 
 B<DBPrefix>
- Must be a string if present. May be omitted.
+ Must be a non-empty string if present. May be omitted.
 
 =head1 SEE ALSO
 
