@@ -2,7 +2,7 @@
 use strict;
 use warnings;
 
-use Test::More tests => 18;
+use Test::More tests => 19;
 use Test::Exception;
 
 BEGIN {
@@ -10,11 +10,11 @@ BEGIN {
   use_ok( 'CMS::Drupal' ) or die;
 }
 
-
-
 can_ok( 'CMS::Drupal', 'new' );
 
-my $drupal = CMS::Drupal->new;
+my $drupal;
+lives_ok { $drupal = CMS::Drupal->new }
+  'Instantiate $drupal';
 
 isa_ok( $drupal, 'CMS::Drupal' );
 

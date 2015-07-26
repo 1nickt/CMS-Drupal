@@ -54,7 +54,8 @@ use warnings;
 use Cwd qw/ abs_path /;
 my $me = abs_path($0);
 
-use Test::More tests => 17;
+use Test::More tests => 22;
+use Test::Exception;
 
 use CMS::Drupal;
 
@@ -90,38 +91,51 @@ EOT
 }
 
 SKIP: {
-  skip "No database credentials supplied", 13, if $skip;
+  skip "No database credentials supplied", 18, if $skip;
 
   ###########
 
-  my $dbh = $drupal->dbh( %params );
+  my $dbh;
+  lives_ok { $dbh = $drupal->dbh( %params ) } 'Get a $dbh';
   isa_ok( $dbh, "DBI::db" );
 
-  my $rv1 = $dbh->do( qq/
-    UPDATE variable
-    SET value = 'i:1;'
-    WHERE name = 'maintenance_mode'
-  /);
+  my $rv1;
+  lives_ok {
+    $rv1 = $dbh->do( qq/
+      UPDATE variable
+      SET value = 'i:1;'
+      WHERE name = 'maintenance_mode'
+    /)
+  } 'Manually set maintenance mode in the DB';
 
-  my $rv2 = $dbh->do( qq/
-    DELETE FROM cache_bootstrap
-    WHERE cid = 'variables'
-  /);
+  my $rv2;
+  lives_ok {
+    $rv2 = $dbh->do( qq/
+      DELETE FROM cache_bootstrap
+      WHERE cid = 'variables'
+    /)
+  } 'Manually clear the cache in the DB';
 
   cmp_ok( $rv1, '>=', 0, 'Maintenance mode set to on for testing' );
   cmp_ok( $rv2, '>=', 0, 'cache_bootstrap.cid.maintenance_mode deleted for testing' );
   is( maintenance_mode_check( $dbh ), 1, 'maintenance_mode_check for on' );
 
-  my $rv3 = $dbh->do( qq/ 
-    UPDATE variable
-    SET value = 'i:0;'
-    WHERE name = 'maintenance_mode'
-  /);
+  my $rv3;
+  lives_ok {
+    $rv3 = $dbh->do( qq/ 
+      UPDATE variable
+      SET value = 'i:0;'
+      WHERE name = 'maintenance_mode'
+    /)
+  } 'Manually unset maintenance mode in the DB';
 
-  my $rv4 = $dbh->do( qq/
-    DELETE FROM cache_bootstrap
-    WHERE cid = 'variables'
-  /);
+  my $rv4;
+  lives_ok { 
+    $rv4 = $dbh->do( qq/
+      DELETE FROM cache_bootstrap
+      WHERE cid = 'variables'
+    /)
+  } 'Manually clear the cache in the DB';
 
   cmp_ok( $rv3, '>=', 0, 'Maintenance mode set to off for testing' );
   cmp_ok( $rv4, '>=', 0, 'cache_bootstrap.cid.maintenance_mode deleted for testing' );

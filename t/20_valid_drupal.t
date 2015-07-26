@@ -54,7 +54,8 @@ use warnings;
 use Cwd qw/ abs_path /;
 my $me = abs_path($0);
 
-use Test::More tests => 9;
+use Test::More tests => 10;
+use Test::Exception;
 
 BEGIN {
   use_ok( 'CMS::Drupal' ) or die;
@@ -88,12 +89,14 @@ EOT
 }
 
 SKIP: {
-    skip "No database credentials supplied", 6, if $skip;
+    skip "No database credentials supplied", 7, if $skip;
 
  ###########
 
  can_ok( 'CMS::Drupal', 'dbh' );
- my $dbh = $drupal->dbh( %params );
+ my $dbh;
+ lives_ok { $dbh = $drupal->dbh( %params ) }
+   'Get a $dbh';
  isa_ok( $dbh, "DBI::db" );
 
  ###########
