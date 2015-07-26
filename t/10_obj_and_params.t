@@ -2,7 +2,7 @@
 use strict;
 use warnings;
 
-use Test::More tests => 19;
+use Test::More tests => 18;
 use Test::Exception;
 
 BEGIN {
@@ -53,14 +53,11 @@ dies_ok { $drupal->dbh(database => 'foo', driver => 'Pg', port => []) }
 dies_ok { $drupal->dbh(database => 'foo', driver => 'Pg', port => 'baz') }
   'Correctly fail to connect with non-integer for port [string].';
 
-dies_ok { $drupal->dbh(database => 'foo', driver => 'Pg', prefix => 'quux') }
-  'Correctly fail to connect with no trailing underscore for prefix.';
-
-dies_ok { $drupal->dbh(database => 'foo', driver => 'Pg', prefix  => '_') }
-  'Correctly fail to connect with only underscore for prefix.';
-
 dies_ok { $drupal->dbh(database => 'foo', driver => 'Pg', prefix  => '') }
   'Correctly fail to connect with empty string for prefix.';
+
+dies_ok { $drupal->dbh(database => 'foo', driver => 'Pg', prefix  => []) }
+  'Correctly fail to connect with non-string for prefix [array].';
 
 __END__
 
