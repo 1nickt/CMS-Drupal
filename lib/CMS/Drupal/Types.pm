@@ -33,8 +33,8 @@ declare DBHost, as Optional[Str],
 declare DBPort, as Optional[Int],
   message { 'The port number must be an integer. ' };
 
-declare DBPrefix, as Optional[StrMatch[ qr/ \w+_ /x ]],
-  message { return 'The table prefix must end in an underscore. ' };
+declare DBPrefix, as Optional[Str]],
+  message { return 'The table prefix must be a string. ' };
 
 1; ## return true to end package CMS::Drupal::Types
 __END__
@@ -93,7 +93,7 @@ B<DBPort>
  Must be an integer if present. May be empty. May be omitted.
 
 B<DBPrefix>
- Must be a string ending in an underscore if present. May be omitted.
+ Must be a string if present. May be omitted.
 
 =head1 SEE ALSO
 
