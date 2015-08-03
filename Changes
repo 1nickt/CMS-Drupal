@@ -1,8 +1,9 @@
-==================================================
-Changes from 2014-07-11 00:00:00 +0000 to present.
-==================================================
-
 {{$NEXT}}
+
+Add Perl minimum version to Makefile.PL using
+Perl::MinimumVersionFast dzil plugin
+
+0.93      2015-07-26 15:57:21-07:00 America/Los_Angeles
 
 Allow any string as the table prefix
 
